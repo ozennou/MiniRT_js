@@ -163,12 +163,34 @@ class matrix
 			console.log(this.data[i]);
 	}
 
+	submatrix(x, y)
+	{
+		var res = new matrix(this.rows - 1, this.cols - 1);
+		var i = 0;
+		for (var a = 0; a < this.rows; a++)
+		{
+			if (a == x)
+				continue;
+			var j = 0;
+			for (var b = 0; b < this.cols; b++)
+			{
+				if (b == y)
+					continue;
+				res.data[i][j] = this.data[a][b];
+				j++;
+			}
+			i++;
+		}
+		return res;
+	
+	}
+
 	cofactor(i, y)
 	{
 		if ((i + y) % 2)
-			return (-submatrix(this, i, y).determinant());
+			return (-this.submatrix(i, y).determinant());
 		else
-			return (submatrix(this, i, y).determinant());
+			return (this.submatrix(i, y).determinant());
 	}
 
 	inversion()
@@ -176,10 +198,10 @@ class matrix
 		var det = this.determinant();
 		if (!det)
 			return -1;
-		var res = new matrix(m.cols, m.rows);
-		for (var x = 0; x < m.rows; x++)
+		var res = new matrix(this.cols, this.rows);
+		for (var x = 0; x < this.rows; x++)
 		{
-			for (var y = 0; y < m.cols; y++)
+			for (var y = 0; y < this.cols; y++)
 				res.data[y][x] = this.cofactor(x, y) / det;
 		}
 		return res
@@ -197,6 +219,11 @@ class ray
 	position(t)
 	{
 		return this.origin.add(this.direction.multip(t));
+	}
+
+	transform(m)
+	{
+		return new ray(m.multi_p(this.origin), m.multi_p(this.direction));
 	}
 }
 

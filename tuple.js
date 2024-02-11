@@ -47,7 +47,7 @@ class tuple
 	
 	normalize(a)
 	{
-		var m = a.magnitude();
+		var m = this.magnitude();
 		return new tuple(this.x / m, this.y / m, this.z / m, this.w / m);
 	}
 	
